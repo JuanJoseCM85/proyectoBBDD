@@ -53,7 +53,11 @@ connection.connect(function(error){
 
 //let sql = "DELETE FROM marks WHERE marks.date < '2012-01-01'";
 
-let sql = "UPDATE marks SET mark = 5 WHERE mark < 5";
+//let sql = "SELECT AVG(marks.mark) FROM marks WHERE subject_id = 10;";
+
+//let sql = "SELECT COUNT(*) FROM escenariotrabajoreto2.students;";
+
+let sql = "SELECT student_id, AVG(mark) FROM marks GROUP BY student_id;";
 
 connection.query(sql,function(err,result){
     if (err){
