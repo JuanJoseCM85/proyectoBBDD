@@ -1,0 +1,16 @@
+* {
+  border: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+.botonMostrar,
+.botonCrear,
+.botonActualizar,
+.botonEliminar {
+  width: 100%;
+}
+
+#formulario {
+  height: 300px;
+}
