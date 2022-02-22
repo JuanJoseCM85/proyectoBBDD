@@ -38,10 +38,10 @@ app.get("/alumnos",
     if( request.query.id != null){
         sql = "SELECT * FROM students WHERE student_id=?"
         params = [request.query.id];
-        console.log(sql);
+        
     }else{
         sql = "SELECT * FROM students";
-        console.log(sql);
+        
     }
 
     
@@ -51,7 +51,6 @@ app.get("/alumnos",
         else{
             console.log(result);
             respuesta = {error: false, codigo:200, mensaje:"Mostramos alumno/os", resultado: result};
-            //response.send(result);
             response.send(respuesta);
         }
     });
@@ -83,10 +82,8 @@ app.post("/alumnos",
                 if(result.insertId){
                     //Si todo sale correcto devolvemo el ID del nuevo alumno insertado.
                     respuesta = {error: false, codigo:200, mensaje:"Alumno insertado correctamente" , resultado: result.insertId};
-                    //response.send(String(result.insertId))
                 }else{
                     //Si la BBDD devuelve un error, devolvermos -1
-                    //response.send("-1");
                     respuesta = {error: true, codigo:200, mensaje:"Error al insertar el alumno" , resultado: -1};
                 }
 
@@ -111,8 +108,7 @@ app.put("/alumnos",
                 "last_name = COALESCE(?,last_name)," +
                 "group_id = COALESCE(?,group_id)," +
                 "ano_ingreso = COALESCE(?, ano_ingreso) WHERE student_id = ?";
-        
-        console.log(sql);
+
 
         connection.query(sql,params,function(err,result){
             if(err){
@@ -128,12 +124,12 @@ app.put("/alumnos",
 
 app.delete("/alumnos",
     function(request, response){
-        console.log(request.body);
-        let respuesta;
         
+        let respuesta;
         let params = [request.body.student_id];
         let sql = "DELETE FROM students WHERE student_id=?";
-        console.log(sql);
+
+      
         connection.query(sql,params,function(err,result){
             if(err){
                 console.log(err);
@@ -150,6 +146,7 @@ app.get("/notas",
         let sql;
         let params =[];
         let respuesta;
+
         if (request.query.id != null){
             params = [request.query.id];
             sql = "SELECT * FROM marks WHERE student_id = ?;"
@@ -164,7 +161,7 @@ app.get("/notas",
             }else{
                 
                 respuesta = {error: false, codigo:200, mensaje: "Mostramos las notas", resultado: result}
-                console.log(respuesta);
+                
             }
             response.send(respuesta);
         });
@@ -229,10 +226,9 @@ app.put("/notas",
     // Elimina las notas de un mark_id pasado por el body
 app.delete("/notas",
     function(request,response){
-        console.log(request.body);
+        
         let params = [request.body.mark_id];
         let sql = "DELETE FROM marks WHERE mark_id=?;"
-        console.log(sql);
 
         connection.query(sql,params, function(err, result){
             if(err){
@@ -254,6 +250,7 @@ app.get("/media",
         let sql;
         let params = [];
         let respuesta;
+
         if( request.query.id != null){
             params = [request.query.id];
             sql = "SELECT AVG(mark) as mark, first_name, last_name FROM marks " +
@@ -269,7 +266,6 @@ app.get("/media",
                 console.log(err);
                 respuesta = {error: true, codigo:200, mensaje: "Nota media no encontrada", resultado: -1}
             }else{
-                console.log(result);
                 respuesta = {error: false, codigo:200, mensaje: "Mostramos nota media", resultado: result}  
             }
             response.send(respuesta);
