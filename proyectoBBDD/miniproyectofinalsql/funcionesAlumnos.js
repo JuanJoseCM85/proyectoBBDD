@@ -9,8 +9,6 @@ class alumno{
     }
 }
 
-
-
 // Funcion que muestra un alumno, si el campo Id Alumno está relleno.
 // Muestra todos los alumnos si el campo Id Alumno está vacio.
 async function mostrarAlumnos(){
@@ -39,6 +37,7 @@ async function mostrarAlumnos(){
         if (result.error == true){
             //Sacamos un mesnaje en un toast indicando que hubo un error.
             console.log("Error Consulta");
+            mostrarToast("Ha ocurrido un error en la consulta");
         }else{
             //Mostramos el resultado de la consulta.
             let r1 = result.resultado;
@@ -84,24 +83,25 @@ async function crearAlumno(){
     //Comprobamos que ningún campo esté vacio.
     if(nombre == ""){
         console.log("Por favor ingrese un nombre válido");
+        mostrarToast("Por favor ingrese un nombre válido");
     }else{
         if(apellidos == ""){
             console.log("Por favor ingrese un apellido válido");
+            mostrarToast("Por favor ingrese un apellido válido");
         }else{
             if(grupo ==""){
                 console.log("Por favor ingrese un grupo válido");
+                mostrarToast("Por favor ingrese un grupo válido");
+                
             }else{
                 if(ano == ""){
                     console.log("Por favor ingrese un año valido");
+                    mostrarToast("Por favor ingrese un año válido");
+                    
                 }else{
                     
                     alumnoNuevo = new alumno(nombre,apellidos,grupo,ano);
-                    // alumnoNuevo = {
-                    //     "first_name": nombre,
-                    //     "last_name": apellidos,
-                    //     "group_id": grupo,
-                    //     "ano_ingreso": ano
-                    // };
+                   
                 }
             }
         }
@@ -127,6 +127,9 @@ async function crearAlumno(){
             if (result.error == false){
                 console.log("Alumno insertado correctamente");
                 console.log(result.resultado);
+                //mesnaje toast alumno insertado
+                mostrarToast("Alumno con ID: "+ result.resultado +" ingresado correctamente.");
+
                 document.getElementById("student_id").value = result.resultado;
                 document.getElementById("first_name").value = "";
                 document.getElementById("last_name").value = "";
@@ -135,6 +138,7 @@ async function crearAlumno(){
             }else{
                 //Sacamos un mesnaje de error.
                 console.log("Error al consultar la bbdd2");
+                mostrarToast("No se ha podido insertar el alumno");
             }
         } catch (error) {
             
@@ -167,6 +171,8 @@ async function actualizarAlumno(){
         if(result.error == false){
             console.log("Alumno modificado correctamente");
             console.log(result);
+            mostrarToast("Alumno modificado correctamente");
+            
         }
     } catch (error) {
         console.log(error);
@@ -194,9 +200,13 @@ async function eliminarAlumno(){
             if (result.error == false){
                 console.log("Alumno eliminado correctamente");
                 console.log(result.resultado);
+                mostrarToast("Alumno con id:"+ id +" eliminado correctamente");
+                document.getElementById("student_id").value = "";
+                
             }else{
                 //Sacamos mensaje de error
                 console.log("Error al eliminar alumno");
+                mostrarToast("Error al eliminar el alumno"+ result.mensaje);
             }
 
         } catch (error) {
@@ -205,6 +215,8 @@ async function eliminarAlumno(){
 
     }else{
         console.log("Por favor introduzca el alumno a eliminar.");
+        mostrarToast("Por favor introduzca el alumno a eliminar");
+        
     }
 }
 
@@ -236,6 +248,7 @@ async function mostrarNotas(){
         if (result.error == true){
             //Sacamos un mesnaje en un toast indicando que hubo un error.
             console.log("Error Consulta Notas");
+            mostrarToast("Error al consultar las notas:" + result.mensaje);
         }else{
             //Mostramos el resultado de la consulta.
             let r1 = result.resultado;
@@ -253,10 +266,8 @@ async function mostrarNotas(){
 function mostrarNotasFront(notas){
     let contenido = "";
 
-    console.log("Entraaaaa")
     
     document.getElementById("cuerpoTablaAlumnos").innerHTML ="";
-    console.log("Longitud notas: " + notas.length);
   
     for(let i=0; i < notas.length; i++){
         contenido += "<tr> "+
@@ -284,15 +295,19 @@ function mostrarNotasFront(notas){
     //Comprobamos que ningún campo esté vacio.
     if(idAlumno == ""){
         console.log("Por favor ingrese un Id de alumno");
+        mostrarToast("Por favor ingrese un Id de alumno");
     }else{
         if(idAsignatura == ""){
             console.log("Por favor ingrese un id asignatura valido");
+            mostrarToast("Por favor ingrese un id de asignatura valido");
         }else{
             if(fecha ==""){
                 console.log("Por favor ingrese una fecha válida");
+                mostrarToast("Por favor ingrese una fecha válida");
             }else{
                 if(nota == ""){
                     console.log("Por favor ingrese una nota válida");
+                    mostrarToast("Por favor ingrese una nota válida");
                 }else{
                     
                     notaNueva = {
@@ -332,9 +347,11 @@ function mostrarNotasFront(notas){
                 document.getElementById("subject_id").value = "";
                 document.getElementById("date").value = "";
                 document.getElementById("mark").value = "";
+                mostrarToast("Nueva nota con ID" + result.resultado + " insertadad");
             }else{
                 //Sacamos un mesnaje de error.
                 console.log("Error al consultar la nota en la BBDD");
+                mostrarToast("Error al consultar la bbdd"+ result.mensaje)
             }
         } catch (error) {
             console.log(error);
@@ -352,11 +369,6 @@ async function actualizarNota(){
         "mark": document.getElementById("mark").value,
         "mark_id": document.getElementById("mark_id").value
     }
-    //new alumno(document.getElementById("first_name").value,
-    //                     document.getElementById("last_name").value,
-    //                     document.getElementById("group_id").value,
-    //                     document.getElementById("ano_ingreso").value,
-    //                     document.getElementById("student_id").value);
     
     console.log(notaNueva);
     let url = `http://localhost:3000/notas`;
@@ -374,9 +386,11 @@ async function actualizarNota(){
         if(result.error == false){
             console.log("Nota modificada correctamente");
             console.log(result.resultado);
+            mostrarToast("Nota modificada correctamente.")
         }else{
             console.log("Error al modificar la nota");
             console.log(result.resultado);
+            mostrarToast("Error al modificar la nota" + result.mensaje)
         }
     } catch (error) {
         console.log(error);
@@ -404,9 +418,11 @@ async function eliminarNota(){
             if (result.error == false){
                 console.log("Nota eliminada correctamente");
                 console.log(result.resultado);
+                mostrarToast("Nota eliminado correctamente");
             }else{
                 //Sacamos mensaje de error
                 console.log("Error al eliminar la nota");
+                mostrarToast("Error al eliminar la nota" + result.mensaje)
             }
 
         } catch (error) {
@@ -415,6 +431,7 @@ async function eliminarNota(){
 
     }else{
         console.log("Por favor introduzca el id de la nota a eliminar.");
+        mostrarToast("Por favor introduzca el id de la nota a eliminar.");
     }
 }
 
@@ -438,6 +455,7 @@ async function mostrarNotaMedia(){
         if (result.error == true){
             //Sacamos un mesnaje en un toast indicando que hubo un error.
             console.log("Error Consulta");
+            mostrarToast("Error en la consulta"+ result.mensaje);
         }else{
             //Mostramos el resultado de la consulta.
             let r1 = result.resultado;
@@ -451,6 +469,7 @@ async function mostrarNotaMedia(){
 
     }else{
         console.log("Por favor introduzca un Id para consultar");
+        mostrarToast("Por favor introduzca un ID para consultar");
     }
 }
 
@@ -502,6 +521,7 @@ async function mostrarApuntadas(){
         if (result.error == true){
             //Sacamos un mesnaje en un toast indicando que hubo un error.
             console.log("Error Consulta");
+            mostrarToast("Error en la consulta: " + result.mensaje);
         }else{
             //Mostramos el resultado de la consulta.
             let r1 = result.resultado;
@@ -561,6 +581,7 @@ async function mostrarImpartidas(){
         if (result.error == true){
             //Sacamos un mesnaje en un toast indicando que hubo un error.
             console.log("Error Consulta");
+            mostrarToast("Error ne la consulta: "+ result.mensaje);
         }else{
             //Mostramos el resultado de la consulta.
             let r1 = result.resultado;
@@ -595,4 +616,177 @@ function mostrarImpartidasFront(impartidas){
     }
   
     document.getElementById("cuerpoTablaAlumnos").innerHTML = contenido;
+}
+
+function cargarWebAlumnos(){
+
+    document.getElementById("introduccion").innerHTML ="";
+    
+    document.getElementById("formu").innerHTML = "<form id='formulario' class='row g-3 col-md-12'>"  +
+    "<div class='col-md-4'>"  +
+    "<label for='inputEmail4' class='form-label'>Id Alumno</label>"  +
+    "<input type='text' class='form-control' id='student_id'>"  +
+    "</div>"  +
+    "<div class='col-md-8'>"  +
+      "<label for='inputPassword4' class='form-label'>Nombre</label>"  +
+      "<input type='text' class='form-control' id='first_name'>"  +
+      "</div>"  +
+    "<div class='col-md-12'>"  +
+    "<label for='inputAddress' class='form-label'>Apellidos</label>"  +
+      "<input type='text' class='form-control' id='last_name'>"  +
+      "</div>"  +
+    "<div class='col-md-6'>"  +
+    "<label for='inputAddress2' class='form-label'>Grupo</label>"  +
+      "<input type='text' class='form-control' id='group_id'>"  +
+      "</div>"  +
+    "<div class='col-md-6'>"  +
+    "<label for='inputCity' class='form-label'>Año Ingreso</label>"  +
+      "<input type='text' class='form-control' id='ano_ingreso'>"  +
+      "</div>"  +
+    
+    "<div class='col-md-6'>"  +
+    "<button id='botonMostrar' type='button' class='btn btn-primary botonMostrar' onclick='mostrarAlumnos()'>Mostrar</button>"  +
+      "</div>"  +
+    "<div class='col-md-6'>"  +
+    "<button id='botonCrear' type='button' class='btn btn-primary botonCrear' onclick='crearAlumno()'>Crear</button>"  +
+        "</div>"  +
+    "<div class='col-md-6'>"  +
+    "<button id='botonActualizar' type='button' class='btn btn-primary botonActualizar' onclick='actualizarAlumno()'>Actualizar</button>"  +
+    "</div>"  +
+   "<div class='col-md-6'>"  +
+        "<button id='botonEliminar' type='button' class='btn btn-primary botonEliminar' onclick='eliminarAlumno()'>Eliminar</button>"  +
+    "</div>"  +
+  "</form>";
+
+  document.getElementById("tablaAlumnos").innerHTML = "<table class='table'>" +
+                                            "<thead>" +
+                                                "<tr>" +
+                                                "<th scope='col'>Id</th>" +
+                                                "<th scope='col'>Nombre</th>" +
+                                                "<th scope='col'>Apellidos</th>" +
+                                                "<th scope='col'>Grupo</th>" +
+                                                "<th scope='col'>Año Ingreso</th>" +
+                                                "</tr>" +
+                                            "</thead>" +
+                                            "<tbody id='cuerpoTablaAlumnos'>" +
+                                            
+                                            "</tbody>" +
+                                            "</table>";
+
+}
+
+function cargarWebNotas(){
+
+    document.getElementById("introduccion").innerHTML = "";
+
+    document.getElementById("formu").innerHTML = "<form id='formulario' class='row g-3 col-md-12'>" +
+    "<div class='col-md-4'>" +
+      "<label for='inputEmail4' class='form-label'>Id Nota</label>" +
+      "<input type='text' class='form-control' id='mark_id'>" +
+    "</div>" +
+    "<div class='col-md-8'>" +
+      "<label for='inputPassword4' class='form-label'>Id Alumno</label>" +
+      "<input type='text' class='form-control' id='student_id'>" +
+    "</div>" +
+    "<div class='col-md-12'>" +
+      "<label for='inputAddress' class='form-label'>Id Asignatura</label>" +
+      "<input type='text' class='form-control' id='subject_id'>" +
+    "</div>" +
+    "<div class='col-md-6'>" +
+      "<label for='inputAddress2' class='form-label'>Fecha Nota</label>" +
+      "<input type='text' class='form-control' id='date'>" +
+    "</div>" +
+    "<div class='col-md-6'>" +
+      "<label for='inputCity' class='form-label'>Nota</label>" +
+      "<input type='text' class='form-control' id='mark'>" +
+    "</div>" +
+    
+    "<div class='col-md-6'>" +
+      "<button id='botonMostrar' type='button' class='btn btn-primary botonMostrar' onclick='mostrarNotas()'>Mostrar</button>" +
+    "</div>" +
+    "<div class='col-md-6'>" +
+        "<button id='botonCrear' type='button' class='btn btn-primary botonCrear' onclick='crearNotas()'>Crear</button>" +
+    "</div>" +
+    "<div class='col-md-6'>" +
+        "<button id='botonActualizar' type='button' class='btn btn-primary botonActualizar' onclick='actualizarNota()'>Actualizar</button>" +
+    "</div>" +
+    "<div class='col-md-6'>" +
+        "<button id='botonEliminar' type='button' class='btn btn-primary botonEliminar' onclick='eliminarNota()'>Eliminar</button>" +
+    "</div>" +
+  "</form>";
+
+  document.getElementById("tablaAlumnos").innerHTML = "<table class='table'>"+
+                                                        "<thead>"+
+                                                            "<tr>"+
+                                                            "<th scope='col'>Id</th>"+
+                                                            "<th scope='col'>Id Alumno</th>"+
+                                                            "<th scope='col'>Id Asignatura</th>"+
+                                                            "<th scope='col'>Fecha</th>"+
+                                                            "<th scope='col'>Nota</th>"+
+                                                            "</tr>"+
+                                                        "</thead>"+
+                                                        "<tbody id='cuerpoTablaAlumnos'>"+
+                                                            
+                                                        "</tbody>"+
+                                                        "</table>";
+}
+
+
+function cargarWebAdicional(){
+    document.getElementById("introduccion").innerHTML = "";
+
+    document.getElementById("formu").innerHTML = "<form id='formulario' class='row g-3 col-md-12'>"+
+                                                    "<div class='col-md-4'>"+
+                                                    "<label for='inputEmail4' class='form-label'>Id Alumno</label>"+
+                                                    "<input type='text' class='form-control' id='student_id'>"+
+                                                    "</div>"+
+                                                    "<div class='col-md-8'>"+
+                                                    "<label for='inputPassword4' class='form-label'>Id Profesor</label>"+
+                                                    "<input type='text' class='form-control' id='teacher_id'>"+
+                                                    "</div>"+
+                                                    
+                                                    "<div class='col-md-6'>"+
+                                                    "<button id='botonMostrar' type='button' class='btn btn-primary botonMostrar' onclick='mostrarNotaMedia()'>Mostrar Nota Media</button>"+
+                                                    "</div>"+
+                                                    "<div class='col-md-6'>"+
+                                                        "<button id='botonCrear' type='button' class='btn btn-primary botonCrear' onclick='mostrarApuntadas()'>Mostar Asig Apuntadas</button>"+
+                                                    "</div>"+
+                                                    "<div class='col-md-6'>"+
+                                                        "<button id='botonActualizar' type='button' class='btn btn-primary botonActualizar' onclick='mostrarImpartidas()'>Mostrar Asig Impartidas</button>"+
+                                                    "</div>"+
+                                                "</form>";
+
+  document.getElementById("tablaAlumnos").innerHTML = "<table class='table'>"+
+                                                        "<thead>"+
+                                                            "<tr id='cabeceraTabla'>"+
+                                                            
+                                                            "</tr>"+
+                                                        "</thead>"+
+                                                        "<tbody id='cuerpoTablaAlumnos'>"+
+                                                        "</tbody>"+
+                                                        "</table>";
+}
+
+function cargarWebIntro(){
+    document.getElementById("introduccion").innerHTML ="<h2> Presentamos nuestra base de datos de Alumnos</h2>"+
+    "<p>Podrás consultar, los alumnos matriculados en nuestro curso, los profesores que imparten las asignaturas, así como las notas obtenidas por los alumnos</p>";
+    document.getElementById("formu").innerHTML = "";
+    document.getElementById("tablaAlumnos").innerHTML = "";
+}
+
+var toastTrigger = document.getElementById('liveToastBtn')
+var toastLiveExample = document.getElementById('liveToast')
+
+if (toastTrigger) {
+  toastTrigger.addEventListener('click', function () {
+    var toast = new bootstrap.Toast(toastLiveExample)
+
+    toast.show()
+  })
+}
+
+function mostrarToast(mensaje){
+    document.getElementById("toastMensaje").innerHTML = mensaje;
+                var toast = new bootstrap.Toast(toastLiveExample)
+                toast.show();
 }

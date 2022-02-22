@@ -104,10 +104,10 @@ app.put("/alumnos",
                     request.body.ano_ingreso,
                     request.body.student_id];
         
-        let sql ="UPDATE students SET first_name = COALESCE(?, first_name)," +
-                "last_name = COALESCE(?,last_name)," +
-                "group_id = COALESCE(?,group_id)," +
-                "ano_ingreso = COALESCE(?, ano_ingreso) WHERE student_id = ?";
+        let sql ="UPDATE students SET first_name = COALESCE(?, first_name), " +
+                    "last_name = COALESCE(?,last_name), " +
+                    "group_id = COALESCE(?,group_id), " +
+                    "ano_ingreso = COALESCE(?, ano_ingreso) WHERE student_id = ?";
 
 
         connection.query(sql,params,function(err,result){

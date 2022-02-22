@@ -11,6 +11,47 @@
   width: 100%;
 }
 
-#formulario {
-  height: 300px;
+#formulario div {
+  margin-top: 5px;
+}
+.formu {
+  margin-left: 50px;
+  margin-top: 50px;
+}
+
+.introduccion {
+  text-align: center;
+}
+
+body {
+  background-color: #eee;
+}
+
+#tablaAlumnos {
+  margin-left: 50px;
+}
+
+.nav-link {
+  border-radius: 0px !important;
+  transition: all 0.5s;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-link small {
+  font-size: 12px;
+}
+
+.nav-link:hover {
+  background-color: #52525240 !important;
+}
+
+.nav-link .fa {
+  transition: all 1s;
+  font-size: 20px;
+}
+
+.nav-link:hover .fa {
+  transform: rotate(360deg);
 }
